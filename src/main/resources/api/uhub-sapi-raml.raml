@@ -1,0 +1,153 @@
+#%RAML 1.0
+title: uhub-sapi
+baseUri: http://localhost:8081/covid/v1
+
+securitySchemes:
+  oauth_2_0: !include /exchange_modules/bcf12108-2430-4848-9971-cc2dff341964/uho-oauth-20-securityschema/1.0.0/uho-oauth-20-securityschema.raml
+traits:
+  correlation-id-header: !include  /exchange_modules/bcf12108-2430-4848-9971-cc2dff341964/x-correlantion-id-header/1.0.0/x-correlation-id-header.raml
+  transction-id-header: !include /exchange_modules/bcf12108-2430-4848-9971-cc2dff341964/x-transaction-id-header/1.0.0/-x-transaction-id-header.raml
+  covid-reports: !include /traits/covid-reports-queryParams.raml
+uses:
+  uhub-sapi-data-type: /exchange_modules/bcf12108-2430-4848-9971-cc2dff341964/bene-common-datatypes/1.0.0/uho-common-datatypes-libray.raml
+
+/cases:
+  post:
+    description: This resource is used to register a COVID case.
+    #securedBy: [oauth_2_0]
+    is: [correlation-id-header, transction-id-header]
+    body:
+      application/json:
+        type: !include /uhuv-sapi-data-type/register-covid-case-uhub-sapi.raml     
+        example: !include /examples/register-covid-case-request-payload.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include /uhuv-sapi-data-type/register-covid-case-response-200-dataType.raml
+            example: !include /examples/CaseIDSucess.json
+      400:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/400.json
+      503:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/503.json
+      500:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/500.json
+
+  put:
+    description: This resource is used to update a COVID case.
+    #securedBy: [oauth_2_0]
+    body:
+      application/xml:
+        type: !include /uhuv-sapi-data-type/register-covid-case-uhub-sapi.raml 
+        example: !include /examples/exampleUserXml.xml
+         
+    responses:
+      200:
+        body:
+          application/xml:
+            type: object
+            xml:
+              name: response
+            properties:
+              caseID: 
+                type: string
+                required: true
+                example: "3544"
+            example: |
+              <?xml version="1.0" encoding="UTF-8" ?>
+              <response>
+                <caseID>7</caseID>
+              </response>
+      400:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/400.json                   
+      503:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/503.json
+      500:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/500.json
+
+/{nationalID}:
+  get:
+    description: To get COVID cases by national ID.
+    #securedBy: [oauth_2_0]
+    is: [correlation-id-header, transction-id-header]
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include /uhuv-sapi-data-type/national-id-array-dataType.raml
+            example: !include /examples/national-id.json
+      503:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/503.json
+      500:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/500.json
+
+/reports: 
+  description: To get reports by state-wise and if state not provided, all states reports are responded.
+  #securedBy: [oauth_2_0]
+  get:
+    is: [correlation-id-header, transction-id-header, covid-reports] 
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include /uhuv-sapi-data-type/register-covid-case.raml
+            example: !include /examples/array-exemplo.json             
+      503:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/503.json
+      500:
+        body:
+          application/json:
+            type: uhub-sapi-data-type.error-response-type
+            example: !include /examples/500.json
+
+/health-check:
+  get:
+    description: Health check endpoint to monitor API status.
+    responses:
+      200:
+        description: API is healthy.
+        body:
+          application/json:
+            example:
+              {
+                "status": "UP",
+                "message": "Uhub-SAPI is alive and kicking"
+              }
+      503:
+        description: API is unhealthy.
+        body:
+          application/json:
+            example:
+              {
+                "status": "DOWN",
+                "message": "Uhub-SAPI is experiencing issues"
+              }
+
+         

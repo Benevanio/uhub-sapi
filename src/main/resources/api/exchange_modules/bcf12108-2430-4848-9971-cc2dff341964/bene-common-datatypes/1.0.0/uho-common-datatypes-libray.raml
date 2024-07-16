@@ -1,0 +1,32 @@
+#%RAML 1.0 Library
+usage: Common data types library across uho apis
+types:
+  error-response-type:
+    type: object
+    description: This type is used to provide detailed information about the error occurred in a generic manner. All APIs should incorporate this object.
+    properties:
+      API:
+        type: string
+        description: Name of the API where the error occurred
+        example: "app.name"
+        required: true
+      ErrorType:
+        type: string
+        description: Identifier of the error type
+        required: true
+      Method:
+        type: string
+        description: HTTP method that was being executed when the error occurred
+        required: true
+      ErrorCode:
+        type: integer
+        description: HTTP status code of the error
+        required: true
+      CorrelationId:
+        type: string
+        description: Correlation ID for the request to track logs and troubleshooting
+        required: true
+      Payload:
+        type: string
+        description: Payload of the error message
+        required: false
