@@ -1,0 +1,8 @@
+{
+  "API": "payment.gateway",
+  "ErrorType": "Service Unavailable",
+  "Method": "POST",
+  "ErrorCode": 503,
+  "CorrelationId": "67890-abcde-12345-fghij",
+  "Payload": "The payment service is currently unavailable. Please try again later."
+}

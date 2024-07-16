@@ -1,0 +1,8 @@
+{
+  "API": "user.registration",
+  "ErrorType": "Validation Error",
+  "Method": "POST",
+  "ErrorCode": 400,
+  "CorrelationId": "12345-abcde-67890-fghij",
+  "Payload": "Invalid input data. The 'email' field must be a valid email address."
+}

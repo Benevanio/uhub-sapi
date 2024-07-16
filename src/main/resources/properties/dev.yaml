@@ -1,0 +1,10 @@
+http:
+  port: "8081"
+  basePath: "/learnMulesoft"
+  
+db:
+  host: "localhost"
+  port: "3306"
+  password: "![WmMkekGTX84=]"
+  user: "root"
+  

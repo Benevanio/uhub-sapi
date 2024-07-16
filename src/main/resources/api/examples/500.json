@@ -1,0 +1,8 @@
+{
+  "API": "order.processing",
+  "ErrorType": "Server Error",
+  "Method": "POST",
+  "ErrorCode": 500,
+  "CorrelationId": "abcde-12345-fghij-67890",
+  "Payload": "An unexpected error occurred while processing the order."
+}
